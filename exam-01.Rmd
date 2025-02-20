@@ -110,7 +110,7 @@ nycflights13::flights %>%
 
 
 
-**The ten most common destinations are Chicago (ORD), Atlanta (ATL), Los Angeles (LAX), Boston (BOS), Orlando (MCO), Charlotte (CLT), San Francisco (SFO), Fort Lauderdale (FLL), Miami (MIA), and Washington D.C. (DCA).  I used the count function to create the frequency table and then I looked at my data to see which column name signifies destination.  I then saw that it was "dest" that signified destination and then I added "sort = TRUE" to make sure that the destinations were sorted in descending order.** 
+**The ten most common destinations are Chicago (ORD), Atlanta (ATL), Los Angeles (LAX), Boston (BOS), Orlando (MCO), Charlotte (CLT), San Francisco (SFO), Fort Lauderdale (FLL), Miami (MIA), and Washington D.C. (DCA).  I used the count function to create the frequency table and then I looked at my data to see which column name signifies destination.  I then saw that it was "dest" that signified destination and then I added 'arrange(desc(n)) to make sure that the destinations were sorted in descending order.** 
 
 
 
@@ -119,6 +119,16 @@ nycflights13::flights %>%
     In your narrative mention the names of the airlines as well.
     *Hint:* You can use the `airlines` dataset to look up the airline name based on `carrier` code.
     
+```{r}
+library(nycflights13)
+
+flights %>%
+  count(carrier) %>%
+  arrange(desc(n)) %>%
+  inner_join(airlines)
+```
+
+**The airlines with the most flights departing from NYC airports in 2013 are United Airlines, JetBlue Airways, ExpressJet Airlines, Delta Air Lines, and American Airlines.  For this question, I used the `count` function to make sure that the carriers were counted in the table, I used the `arrange(desc(n))` function to arrange the flights in decreasing order, and I used `inner_join` to combine the `airlines` and `flights` datasets and to make sure that I got accurate, complete, and organized data.**
 
 
 3.  **Question 3 (10 points)** - Consider only flights that have non-missing arrival delay information.
@@ -126,6 +136,11 @@ nycflights13::flights %>%
 
     a\.
     Which carrier had the highest mean arrival delay?
+    
+```{r}
+
+```
+
 
     b\.
     Which carrier had the lowest mean arrival delay?
