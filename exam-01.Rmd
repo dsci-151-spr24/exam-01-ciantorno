@@ -103,9 +103,9 @@ The main data is in the `flights` data frame, but there are additional data sets
 library(magrittr)
 library(dplyr)
 
-nycflights13::flights %>%
-  count(dest) %>%
-  arrange(desc(n))
+nycflights13::flights %>% 
+  count(dest) %>% 
+  arrange(desc(n)) 
 ```
 
 
@@ -123,30 +123,42 @@ nycflights13::flights %>%
 library(nycflights13)
 
 flights %>%
-  count(carrier) %>%
-  arrange(desc(n)) %>%
-  inner_join(airlines)
+  count(carrier) %>% 
+  arrange(desc(n)) %>% 
+  inner_join(airlines) 
 ```
 
-**The airlines with the most flights departing from NYC airports in 2013 are United Airlines, JetBlue Airways, ExpressJet Airlines, Delta Air Lines, and American Airlines.  For this question, I used the `count` function to make sure that the carriers were counted in the table, I used the `arrange(desc(n))` function to arrange the flights in decreasing order, and I used `inner_join` to combine the `airlines` and `flights` datasets and to make sure that I got accurate, complete, and organized data.**
-
+**The airlines with the most flights departing from NYC airports in 2013 are United Airlines, JetBlue Airways, ExpressJet Airlines, Delta Air Lines, and American Airlines.  I used the `count` function to count the carriers in the table, the arrange(desc(n)) function to arrange the flights and airlines in descending order, and the `inner_join(airlines)` function to combine the `flights` and `airlines` datasets.**
 
 3.  **Question 3 (10 points)** - Consider only flights that have non-missing arrival delay information.
     Your answer should include the name of the carrier in addition to the carrier code and the values asked.
+    
+```{r}
+flights %>%
+  group_by(carrier) %>% 
+  summarise(delay = mean(arr_delay, na.rm = TRUE)) %>% 
+  inner_join(airlines) %>% 
+  arrange(desc(delay)) 
+  
+```
+
 
     a\.
     Which carrier had the highest mean arrival delay?
     
-```{r}
-
-```
-
+**The F9 carrier from Frontier Airlines had the highest mean arrival delay.**
 
     b\.
     Which carrier had the lowest mean arrival delay?
+    
+**The AS carrier from Alaska Airlines had the lowest mean arrival delay.**
+
+**I used the `group_by` function to make sure that the table was grouped by carrier, the `summarise` function to put multiple values into one, `na.rm` to limit the table to non-missing values, and `inner_join` and `arrange` to combine datasets and list the variables in descending order for organizational purposes.**
 
 4.  **Question 4 (10 points)** - What was the mean temperature at the origin airport on the day with the highest departure delay?
     Your answer should include the name of origin airport, the date with the highest departure delay, and the mean temperature on that day.
+    
+
 
 5.  **Question 5 (15 points)** - Consider breaking the day into four time intervals: 12:01am-6am, 6:01am-12pm, 12:01pm-6pm, 6:01pm-12am.
 
