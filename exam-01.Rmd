@@ -161,7 +161,8 @@ flights %>%
 ```{r}
 flights %>%
   arrange(desc(dep_delay)) %>%
-  select(dep_delay, month, day, origin)
+  select(dep_delay, month, day, origin) %>%
+  slice(1)
 ```
 
 ```{r}
@@ -178,17 +179,36 @@ weather %>%
 
     b\.
     Comment on how the likelihood of being delayed change throughout the day?
+    
+
+Citation/source for creating a variable in part a: https://r4ds.had.co.nz/dates-and-times.html (Section 9.6 of chapter 9 in the Epidemiologist R Handbook).
 
 6.  **Question 6 (15 points)** - Find the flight with the longest air time.
+```{r}
+flights %>%
+  arrange(desc(air_time)) %>%
+  slice(1) %>%
+  select(air_time, dest, tailnum) %>%
+  inner_join(planes, "tailnum") %>%
+  select(air_time, seats, tailnum, dest)
+```
 
     a\.
     How long is this flight?
 
+**This flight was 695 minutes long.**
+   
     b\.
     What city did it fly to?
 
+**The flight flew to Honolulu.**
+
     c\.
     How many seats does the plane that flew this flight have?
+
+**This flight has 292 seats.**
+
+**I used `arrange(desc)` to make sure the flight with the longest airtime was at the top of the data and I used `slice` to narrow the data down to the top flight.  I used `inner_join` to join tailnum from `planes` data set to `flights` and to make sure that `seats` were joined as well.  I used `select` to select which rows I wanted in my table.**
 
 7.  **Question 7 (15 pts)** - The `airports` data frame contains information on a large number of primarily American airports.
     These data include location information for these airports in the form of latitude and longitude coordinates.
