@@ -192,7 +192,6 @@ flights %>%
   inner_join(planes, "tailnum") %>%
   select(air_time, seats, tailnum, dest)
 ```
-
     a\.
     How long is this flight?
 
@@ -201,7 +200,7 @@ flights %>%
     b\.
     What city did it fly to?
 
-**The flight flew to Honolulu.**
+**The flight was to Honolulu.**
 
     c\.
     How many seats does the plane that flew this flight have?
@@ -218,6 +217,33 @@ flights %>%
     *Hint:* You will first need to limit your analysis to the Contiguous United States.
     [This Wikipedia article](https://en.wikipedia.org/wiki/List_of_extreme_points_of_the_United_States) can help, but you're welcomed to use other resources as well.
     Make sure to cite whatever resource you use.
+    
+I used location information from the Wikipedia article, https://en.wikipedia.org/wiki/List_of_extreme_points_of_the_United_States, and I used https://latlongdata.com/lat-long-converter/ to convert the information into decimal degrees.
+
+**The northernmost point of the contiguous United States is Northwest Angle inlet in Lake of the Woods, Minnesota, at 49°23′04.1″N 95°9′12.2″W, or 49.3844722222 and -95.1533888889.**
+
+**The southernmost point of the contiguous United States is Western Dry Rocks in Florida Keys, Florida, at 24°26.8′N 81°55.6′W, or 24.4466666667 and -81.9266666667.**
+
+**The easternmost point of the contiguous United States is Sail Rock in  Lubec, Maine 44°48′45.2″N 66°56′49.3″W, or 44.8125555556 and -66.9470277778.** 
+
+**The westernmost point of the contiguous United States is Cape Alava, Washington, at 48°9′51″N 124°43′59″W, or 48.1641666667 and -124.7330555556.**
+
+**With this information, I can make an `r` code chunk that filters only the contiguous United States.**
+
+```{r}
+library(ggplot2)
+
+airports %>%
+  filter(
+    lat > 24.4466666667 & lat < 49.3844722222,
+    lon > -124.7330555556 & lon < -66.9470277778) %>%
+
+ggplot(aes(x = lon, y = lat)) +
+  geom_point()
+  
+```
+
+**This visualization shows me that the the distribution of airports is most dense around places on the East Coast, like New York and parts of New England, Florida, Tennessee.  There are also other places with clusters of airports, like Southern California, around Wisconsin, and the coast of Washington.  Airports are more spaced out throughout the other areas of the US.  I chose a scatterplot for this visualization, so that I could clearly see which places had more of a distribution of airports as opposed to other places.**
 
 8.  **Question 8 (15 pts)** - Recreate the plot included below using the `flights` data.
     Once you have created the visualization, in no more than one paragraph, describe what you think the point of this visualization might be.
