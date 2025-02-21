@@ -250,7 +250,25 @@ ggplot(aes(x = lon, y = lat)) +
     *Hint:* The visualization uses the variable `arrival`, which is not included in the `flights` data frame.
     You will have to create `arrival` yourself, it is a categorical variable that is equal to `"ontime"` when `arr_delay <= 0` and `"delayed"` when `arr_delay > 0`.
 
+```{r}
+flights %>% 
+  filter(dest %in% c("PHL","RDU")) %>% 
+  filter(month==12) %>% 
+  mutate(
+    arrival= case_when(arr_delay <= 0 ~ "ontime", arr_delay > 0 ~ "delayed")) %>% 
+  filter(!is.na(arrival)) %>% 
+          ggplot(aes(x=arrival, y= dep_delay, color=dest))+
+  geom_boxplot()+
+  facet_grid(dest~origin)+
+  
+  labs(title="On time performance of NYC flights",
+       subtitle="December 2013",
+        x= "Arrival",
+        y="Departure delay", 
+        color = "Destination")
+```
 
+**I think that the point of this visualization is to show the relationship between on time and delayed flights in NYC airports going to Philadelphia and Raleigh-Durham airports.**  
 
 ![](img/plot-to-recreate.png)
 
