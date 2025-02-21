@@ -157,8 +157,19 @@ flights %>%
 
 4.  **Question 4 (10 points)** - What was the mean temperature at the origin airport on the day with the highest departure delay?
     Your answer should include the name of origin airport, the date with the highest departure delay, and the mean temperature on that day.
-    
+  
+```{r}
+flights %>%
+  arrange(desc(dep_delay)) %>%
+  select(dep_delay, month, day, origin)
+```
 
+```{r}
+weather %>%
+  filter(month == 1, day == 9, origin == "JFK") %>%
+  summarise(mean_temp = mean(temp))
+```
+**The mean temperature at the origin airport on the day with the highest departure delay was 42.7 at JFK airport on month 1, day 9.  I created a table with arrange and select for the dataset `flights` to figure out the origin airport on the day with the highest departure delay and I created a table with filter and summarize to figure out the mean temperature for that origin airport.**
 
 5.  **Question 5 (15 points)** - Consider breaking the day into four time intervals: 12:01am-6am, 6:01am-12pm, 12:01pm-6pm, 6:01pm-12am.
 
@@ -192,6 +203,8 @@ flights %>%
     Once you have created the visualization, in no more than one paragraph, describe what you think the point of this visualization might be.
     *Hint:* The visualization uses the variable `arrival`, which is not included in the `flights` data frame.
     You will have to create `arrival` yourself, it is a categorical variable that is equal to `"ontime"` when `arr_delay <= 0` and `"delayed"` when `arr_delay > 0`.
+
+
 
 ![](img/plot-to-recreate.png)
 
