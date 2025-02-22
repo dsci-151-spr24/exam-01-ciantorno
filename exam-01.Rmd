@@ -1,7 +1,7 @@
 ---
 title: "Take Home Exam #1"
 author: "Chiara Iantorno"
-date: "February 24, 2024"
+date: "February 21, 2025"
 output: html_document
 ---
 
@@ -211,8 +211,8 @@ Citation/source for creating a variable in part a: Section 9.6 of chapter 9 in t
 flights %>%
   arrange(desc(air_time)) %>%
   slice(1) %>%
-  select(air_time, dest, tailnum) %>%
-  inner_join(planes, "tailnum") %>%
+  select (dest, tailnum, air_time) %>%
+  inner_join(planes) %>%
   select(air_time, seats, tailnum, dest)
 ```
     a\.
@@ -230,7 +230,7 @@ flights %>%
 
 **This flight has 292 seats.**
 
-**I used `arrange(desc)` to make sure the flight with the longest airtime was at the top of the data and I used `slice` to narrow the data down to the top flight.  I used `inner_join` to join tailnum from `planes` data set to `flights` and to make sure that `seats` were joined as well.  I used `select` to select which rows I wanted in my table.**
+**I used `arrange(desc)` to make sure the flight with the longest airtime was at the top of the data and I used `slice` to narrow the data down to the top flight.  I used `inner_join` from `planes` data to make sure that `seats` were joined.  I used `select` to select which rows I wanted in my table.**
 
 7.  **Question 7 (15 pts)** - The `airports` data frame contains information on a large number of primarily American airports.
     These data include location information for these airports in the form of latitude and longitude coordinates.
@@ -243,13 +243,14 @@ flights %>%
     
 I used location information from the Wikipedia article, https://en.wikipedia.org/wiki/List_of_extreme_points_of_the_United_States, and I used https://latlongdata.com/lat-long-converter/ to convert the information into decimal degrees.
 
+**The southernmost point of the contiguous United States is Western Dry Rocks in Florida Keys, Florida, at 24°26.8′N 81°55.6′W, or 24.4466666667 and -81.9266666667.**
+
 **The northernmost point of the contiguous United States is Northwest Angle inlet in Lake of the Woods, Minnesota, at 49°23′04.1″N 95°9′12.2″W, or 49.3844722222 and -95.1533888889.**
 
-**The southernmost point of the contiguous United States is Western Dry Rocks in Florida Keys, Florida, at 24°26.8′N 81°55.6′W, or 24.4466666667 and -81.9266666667.**
+**The westernmost point of the contiguous United States is Cape Alava, Washington, at 48°9′51″N 124°43′59″W, or 48.1641666667 and -124.7330555556.**
 
 **The easternmost point of the contiguous United States is Sail Rock in  Lubec, Maine 44°48′45.2″N 66°56′49.3″W, or 44.8125555556 and -66.9470277778.** 
 
-**The westernmost point of the contiguous United States is Cape Alava, Washington, at 48°9′51″N 124°43′59″W, or 48.1641666667 and -124.7330555556.**
 
 **With this information, I can make an `r` code chunk that filters only the contiguous United States.**
 
@@ -266,7 +267,7 @@ ggplot(aes(x = lon, y = lat)) +
   
 ```
 
-**This visualization shows me that the the distribution of airports is most dense around places on the East Coast, like New York and parts of New England, Florida, Tennessee.  There are also other places with clusters of airports, like Southern California, around Wisconsin, and the coast of Washington.  Airports are more spaced out throughout the other areas of the US.  I chose a scatterplot for this visualization, so that I could clearly see which places had more of a distribution of airports as opposed to other places.**
+**This visualization shows me that the the distribution of airports is most dense around places on the East Coast, like New York and parts of New England, Florida, Tennessee.  There are also other places with clusters of airports, like Southern California, Wisconsin, and the coast of Washington.  Airports are more spaced out throughout the other areas of the US.  I chose a scatterplot for this visualization, so that I could clearly see which places had more of a distribution of airports as opposed to other places.**
 
 8.  **Question 8 (15 pts)** - Recreate the plot included below using the `flights` data.
     Once you have created the visualization, in no more than one paragraph, describe what you think the point of this visualization might be.
@@ -277,8 +278,7 @@ ggplot(aes(x = lon, y = lat)) +
 flights %>% 
   filter(dest %in% c("PHL","RDU")) %>% 
   filter(month==12) %>% 
-  mutate(
-    arrival= case_when(arr_delay <= 0 ~ "ontime", arr_delay > 0 ~ "delayed")) %>% 
+  mutate(arrival= case_when(arr_delay <= 0 ~ "ontime", arr_delay > 0 ~ "delayed")) %>% 
   filter(!is.na(arrival)) %>% 
           ggplot(aes(x=arrival, y= dep_delay, color=dest))+
   geom_boxplot()+
