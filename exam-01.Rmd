@@ -174,14 +174,37 @@ weather %>%
 
 5.  **Question 5 (15 points)** - Consider breaking the day into four time intervals: 12:01am-6am, 6:01am-12pm, 12:01pm-6pm, 6:01pm-12am.
 
+
     a\.
     Calculate the proportion of flights that are delayed at departure at each of these time intervals.
 
+```{r}
+flights <- flights %>%
+  mutate(time_of_day = case_when(
+    dep_time >= 001  & dep_time <= 600  ~ "12:01am - 6am",
+    dep_time >= 601  & dep_time <= 1200 ~ "6:01am - 12pm",
+    dep_time >= 1201 & dep_time <= 1800 ~ "12:01pm - 6pm",
+    dep_time >= 1801                    ~ "6:01pm - 12am"
+  ))
+
+flights %>%
+  filter(!is.na(dep_delay)) %>%
+  mutate(Dep_delay = ifelse(dep_delay > 0, "delayed", "ontime")) %>%
+  count(time_of_day, Dep_delay) %>%
+  group_by(time_of_day) %>%
+  mutate(prop = n / sum(n)) %>%
+  filter(Dep_delay == "delayed") %>%
+  arrange(prop)
+```
+**I used `mutate` and separated the time intervals to make sure that the intervals would show up in the table and I used `filter` and `mutate` to make the variables "Dep-delay" and "prop".**
+  
     b\.
     Comment on how the likelihood of being delayed change throughout the day?
     
+**It is more likely that one's flight would be delayed from 6:01pm - 12am, since that interval seems to have the highest proportion of delayed flights.**
+    
 
-Citation/source for creating a variable in part a: https://r4ds.had.co.nz/dates-and-times.html (Section 9.6 of chapter 9 in the Epidemiologist R Handbook).
+Citation/source for creating a variable in part a: Section 9.6 of chapter 9 in the Epidemiologist R Handbook (https://www.epirhandbook.com/en/new_pages/dates.html)
 
 6.  **Question 6 (15 points)** - Find the flight with the longest air time.
 ```{r}
